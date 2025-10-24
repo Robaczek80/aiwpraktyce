@@ -1,10 +1,11 @@
 ﻿import "./globals.css"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import GA from "./_components/GA"
 
 export const metadata = {
   title: "AI w Praktyce",
-  description: "AI: biznes, osobiste, narzędzia, zarabianie"
+  description: "AI: biznes, osobiste, narzędzia, zarabianie",
 }
 
 const nav = [
@@ -48,6 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <footer className="mx-auto max-w-5xl px-4 py-10 text-sm text-gray-500">
           © {new Date().getFullYear()} AI w Praktyce • Efektywność i oszczędzanie z AI
         </footer>
+        <GA />
       </body>
     </html>
   )
