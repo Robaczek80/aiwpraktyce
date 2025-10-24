@@ -2,44 +2,44 @@
 
 export default function Home() {
   return (
-    <div className="space-y-10">
+    <div>
       {/* HERO */}
-      <header className="container pt-10 pb-8">
-        <p className="text-sm font-medium text-gray-500">AI w Praktyce</p>
-        <h1 className="h1 mt-2">Zwiększ efektywność, oszczędzaj, zarabiaj z AI</h1>
-        <p className="lead mt-3 max-w-2xl">
-          Konkretne poradniki, narzędzia i kalkulatory. Zero marketingu, same liczby i wdrożenia.
+      <header className="hero-bg py-20 text-center px-6">
+        <h1 className="h1 mb-4">AI w Praktyce</h1>
+        <p className="text-lg text-slate-300 max-w-2xl mx-auto">
+          Zwiększ efektywność, oszczędzaj, zarabiaj z AI. 
+          Praktyczne wdrożenia, narzędzia i analizy — w jednym miejscu.
         </p>
-        <div className="mt-6 flex gap-3">
+        <div className="mt-8 flex flex-wrap justify-center gap-4">
           <Link href="/narzedzia" className="btn">Narzędzia i kalkulatory</Link>
           <Link href="/biznes" className="btn-ghost">Zastosowania w biznesie</Link>
         </div>
       </header>
 
       {/* SEKCE */}
-      <section className="container grid gap-4 sm:grid-cols-2">
+      <section className="grid gap-6 sm:grid-cols-2 md:grid-cols-2 max-w-5xl mx-auto px-4 py-16">
         <Link href="/biznes" className="card">
           <div className="card-body">
-            <h2 className="h2">Biznes</h2>
-            <p className="lead mt-1">Procesy, automatyzacje, case studies i ROI.</p>
+            <h2 className="h2 mb-2">Biznes</h2>
+            <p className="lead">Procesy, automatyzacje, case studies i ROI.</p>
           </div>
         </Link>
         <Link href="/osobiste" className="card">
           <div className="card-body">
-            <h2 className="h2">Osobiste</h2>
-            <p className="lead mt-1">Organizacja, oszczędzanie, produktywność z AI.</p>
+            <h2 className="h2 mb-2">Osobiste</h2>
+            <p className="lead">Organizacja, oszczędzanie, produktywność z AI.</p>
           </div>
         </Link>
         <Link href="/narzedzia" className="card">
           <div className="card-body">
-            <h2 className="h2">Narzędzia</h2>
-            <p className="lead mt-1">Kalkulatory: ROI, cashback, prąd i więcej.</p>
+            <h2 className="h2 mb-2">Narzędzia</h2>
+            <p className="lead">Kalkulatory ROI, cashback, prąd i więcej.</p>
           </div>
         </Link>
         <Link href="/zarabianie" className="card">
           <div className="card-body">
-            <h2 className="h2">Zarabianie</h2>
-            <p className="lead mt-1">Modele przychodu, afiliacja, automaty.</p>
+            <h2 className="h2 mb-2">Zarabianie</h2>
+            <p className="lead">Modele przychodu, afiliacja, automaty.</p>
           </div>
         </Link>
       </section>
