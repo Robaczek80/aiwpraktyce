@@ -1,55 +1,84 @@
 ﻿"use client"
 import { useState } from "react"
 
-type CashbackItem = {
-  name: string
-  url: string
-  rate: number
+type CashbackRow = {
+  shop: string
+  offers: { site: string; rate: number; url: string }[]
 }
 
-const cashbackSites: CashbackItem[] = [
-  { name: "LetyShops", url: "https://letyshops.com", rate: 4.5 },
-  { name: "Goodie", url: "https://goodie.pl", rate: 5.0 },
-  { name: "Refunder", url: "https://refunder.pl", rate: 3.2 },
-  { name: "Planet Plus", url: "https://planetplus.pl", rate: 4.0 },
-  { name: "Picodi", url: "https://picodi.com/pl", rate: 2.8 },
+const data: CashbackRow[] = [
+  {
+    shop: "Allegro",
+    offers: [
+      { site: "Goodie", rate: 2.2, url: "https://goodie.pl" },
+      { site: "LetyShops", rate: 1.5, url: "https://letyshops.com" },
+      { site: "Refunder", rate: 1.0, url: "https://refunder.pl" },
+    ],
+  },
+  {
+    shop: "Media Expert",
+    offers: [
+      { site: "LetyShops", rate: 5.0, url: "https://letyshops.com" },
+      { site: "PlanetPlus", rate: 4.5, url: "https://planetplus.pl" },
+      { site: "Goodie", rate: 4.0, url: "https://goodie.pl" },
+    ],
+  },
+  {
+    shop: "Empik",
+    offers: [
+      { site: "Goodie", rate: 7.5, url: "https://goodie.pl" },
+      { site: "Refunder", rate: 6.0, url: "https://refunder.pl" },
+      { site: "LetyShops", rate: 5.5, url: "https://letyshops.com" },
+    ],
+  },
+  {
+    shop: "Zalando",
+    offers: [
+      { site: "LetyShops", rate: 6.0, url: "https://letyshops.com" },
+      { site: "Goodie", rate: 5.0, url: "https://goodie.pl" },
+      { site: "Picodi", rate: 3.0, url: "https://picodi.com/pl" },
+    ],
+  },
 ]
 
-export default function CashbackCalculator() {
+export default function CashbackShops() {
   const [amount, setAmount] = useState("")
-  const [best, setBest] = useState<CashbackItem | null>(null)
-  const [results, setResults] = useState<{ site: CashbackItem; cashback: number }[]>([])
+  const [selected, setSelected] = useState(data[0])
+  const [result, setResult] = useState<{ site: string; cashback: number }[]>([])
 
   const calc = () => {
-    const value = parseFloat(amount)
-    if (!value || value <= 0) {
-      setBest(null)
-      setResults([])
-      return
-    }
-
-    const res = cashbackSites.map(site => ({
-      site,
-      cashback: (site.rate / 100) * value,
+    const v = parseFloat(amount)
+    if (!v || v <= 0) return setResult([])
+    const res = selected.offers.map(o => ({
+      site: o.site,
+      cashback: (v * o.rate) / 100,
     }))
-    setResults(res)
-    const max = res.reduce((a, b) => (b.cashback > a.cashback ? b : a))
-    setBest(max.site)
+    setResult(res)
   }
 
   return (
-    <section className="max-w-3xl mx-auto px-4 py-12 space-y-8">
+    <section className="max-w-4xl mx-auto px-4 py-12 space-y-8">
       <div>
-        <h1 className="h1 mb-3">Kalkulator cashback</h1>
+        <h1 className="h1 mb-3">Porównywarka cashback sklepów</h1>
         <p className="lead max-w-2xl">
-          Porównaj zwrot z zakupów w popularnych serwisach cashback. 
-          Wpisz planowany wydatek i zobacz, gdzie zyskasz najwięcej.
+          Sprawdź, gdzie otrzymasz największy zwrot z zakupów online.
         </p>
       </div>
 
       <div className="bg-slate-800 p-6 rounded-xl space-y-4">
-        <label className="block text-slate-300 font-medium">
-          Planowany wydatek (zł)
+        <label className="block font-medium text-slate-300">
+          Wybierz sklep:
+          <select
+            className="mt-2 w-full p-2 rounded bg-slate-900 border border-slate-700 text-slate-100"
+            value={selected.shop}
+            onChange={e => setSelected(data.find(x => x.shop === e.target.value) || data[0])}
+          >
+            {data.map(s => <option key={s.shop}>{s.shop}</option>)}
+          </select>
+        </label>
+
+        <label className="block font-medium text-slate-300">
+          Kwota zakupów (zł)
           <input
             type="number"
             value={amount}
@@ -58,44 +87,40 @@ export default function CashbackCalculator() {
             placeholder="np. 500"
           />
         </label>
+
         <button onClick={calc} className="btn">Oblicz zwrot</button>
       </div>
 
-      {results.length > 0 && (
+      {result.length > 0 && (
         <div className="space-y-6">
-          <h2 className="h2">Porównanie serwisów</h2>
+          <h2 className="h2">Porównanie serwisów cashback</h2>
           <table className="w-full border-collapse text-sm">
             <thead>
               <tr className="text-slate-400 border-b border-slate-700 text-left">
                 <th className="py-2 px-2">Serwis</th>
-                <th className="py-2 px-2">Zwrot (%)</th>
-                <th className="py-2 px-2">Kwota zwrotu (zł)</th>
-                <th className="py-2 px-2">Strona</th>
+                <th className="py-2 px-2">Stawka (%)</th>
+                <th className="py-2 px-2">Zwrot (zł)</th>
+                <th className="py-2 px-2">Link</th>
               </tr>
             </thead>
             <tbody>
-              {results.map(r => (
-                <tr key={r.site.name} className="border-b border-slate-800 hover:bg-slate-800/40">
-                  <td className="py-2 px-2 font-medium">{r.site.name}</td>
-                  <td className="py-2 px-2">{r.site.rate.toFixed(1)}%</td>
-                  <td className="py-2 px-2">{r.cashback.toFixed(2)}</td>
+              {selected.offers.map(o => (
+                <tr key={o.site} className="border-b border-slate-800 hover:bg-slate-800/40">
+                  <td className="py-2 px-2 font-medium">{o.site}</td>
+                  <td className="py-2 px-2">{o.rate.toFixed(1)}%</td>
+                  <td className="py-2 px-2">{((parseFloat(amount) || 0) * o.rate / 100).toFixed(2)}</td>
                   <td className="py-2 px-2">
-                    <a href={r.site.url} target="_blank" className="text-blue-400 hover:text-blue-300">
-                      Odwiedź
-                    </a>
+                    <a href={o.url} target="_blank" className="text-blue-400 hover:text-blue-300">Odwiedź</a>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
 
-          {best && (
-            <div className="mt-8 p-4 rounded-xl bg-gradient-to-r from-blue-600 to-sky-500">
-              <p className="text-white text-lg">
-                💡 Najbardziej opłacalny serwis: <strong>{best.name}</strong> ({best.rate}%)
-              </p>
-            </div>
-          )}
+          <p className="text-sm text-slate-400 mt-4">
+            ⚠️ Stawki mają charakter poglądowy. Przed zakupem sprawdź aktualne wartości cashback
+            bezpośrednio w serwisie partnerskim.
+          </p>
         </div>
       )}
     </section>
