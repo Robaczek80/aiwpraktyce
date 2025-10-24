@@ -48,54 +48,61 @@ export default function CashbackPage() {
     const extras = [...bySite.keys()]
       .filter(k => !ALL_SITES.includes(k))
       .map(k => bySite.get(k)!) as Row[]
-    return [...base, ...extras].sort(
-      (a,b) => parseFloat(b.rate || "0") - parseFloat(a.rate || "0")
-    )
+    return [...base, ...extras].sort((a,b)=>parseFloat(b.rate||"0") - parseFloat(a.rate||"0"))
   }, [data, selectedShop])
 
   return (
-    <main className="min-h-screen bg-gray-950 text-white flex flex-col items-center p-8">
-      <h1 className="text-3xl font-bold text-cyan-400 mb-4">Kalkulator i porównywarka cashback</h1>
-      <p className="mb-6 text-gray-300">Oblicz kwotę zwrotu i porównaj serwisy cashback.</p>
+    <main className="min-h-screen bg-gradient-to-b from-gray-950 to-gray-900 text-white flex flex-col items-center py-12 px-4">
+      <div className="max-w-4xl w-full text-center mb-12">
+        <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600 mb-3">
+          Kalkulator i porównywarka cashback
+        </h1>
+        <p className="text-gray-400 text-lg">
+          Oblicz realny zwrot z zakupów i sprawdź, który serwis daje najwięcej.
+        </p>
+      </div>
 
-      <select
-        value={selectedShop}
-        onChange={e=>setSelectedShop(e.target.value)}
-        className="p-3 rounded bg-gray-800 border border-gray-600 text-white w-72 mb-4"
-      >
-        <option value="">Wybierz sklep</option>
-        {shops.map(s => <option key={s} value={s}>{s}</option>)}
-      </select>
+      <div className="flex flex-col sm:flex-row gap-4 mb-8">
+        <select
+          value={selectedShop}
+          onChange={e=>setSelectedShop(e.target.value)}
+          className="p-3 rounded-xl bg-gray-800/70 backdrop-blur border border-gray-700 text-white w-72 shadow-lg"
+        >
+          <option value="">🛒 Wybierz sklep</option>
+          {shops.map(s => <option key={s} value={s}>{s}</option>)}
+        </select>
 
-      <input
-        type="number"
-        placeholder="Kwota zakupów (zł)"
-        value={amount === "" ? "" : amount}
-        onChange={e=>setAmount(e.target.value ? parseFloat(e.target.value) : "")}
-        className="p-3 rounded bg-gray-800 border border-gray-600 text-white w-72 mb-8 text-center"
-      />
+        <input
+          type="number"
+          placeholder="Kwota zakupów (zł)"
+          value={amount === "" ? "" : amount}
+          onChange={e=>setAmount(e.target.value ? parseFloat(e.target.value) : "")}
+          className="p-3 rounded-xl bg-gray-800/70 backdrop-blur border border-gray-700 text-white w-72 text-center shadow-lg"
+        />
+      </div>
 
       {rows.length > 0 && (
-        <div className="bg-gray-900 rounded-xl p-6 shadow-lg w-full max-w-3xl">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="text-cyan-400 border-b border-gray-700">
-                <th className="py-2 text-left">Serwis</th>
-                <th className="py-2 text-left">Zwrot %</th>
-                <th className="py-2 text-left">Kwota zwrotu</th>
-                <th className="py-2 text-left">Link</th>
+        <div className="w-full max-w-4xl bg-gray-900/60 backdrop-blur rounded-2xl shadow-2xl border border-gray-800 overflow-hidden">
+          <table className="w-full border-collapse text-left">
+            <thead className="bg-gray-800/80">
+              <tr className="text-cyan-400 text-sm uppercase tracking-wide">
+                <th className="py-3 px-4">Serwis</th>
+                <th className="py-3 px-4">Zwrot %</th>
+                <th className="py-3 px-4">Kwota zwrotu</th>
+                <th className="py-3 px-4">Link</th>
               </tr>
             </thead>
             <tbody>
               {rows.map((r,i) => {
                 const rate = parseFloat(r.rate || "0")
                 const cashback = amount && rate ? ((amount * rate) / 100).toFixed(2) : "-"
+                const topColor = i === 0 ? "text-green-400" : i === 1 ? "text-yellow-400" : i === 2 ? "text-orange-400" : "text-white"
                 return (
-                  <tr key={i} className="border-b border-gray-800 hover:bg-gray-800">
-                    <td className="py-2">{r.site}</td>
-                    <td className="py-2">{r.rate ? rate.toFixed(1) + "%" : "–"}</td>
-                    <td className="py-2">{cashback !== "-" ? cashback + " zł" : "–"}</td>
-                    <td className="py-2">
+                  <tr key={i} className="border-b border-gray-800 hover:bg-gray-800/40 transition">
+                    <td className={`py-3 px-4 font-semibold ${topColor}`}>{r.site}</td>
+                    <td className="py-3 px-4">{r.rate ? rate.toFixed(1) + "%" : "–"}</td>
+                    <td className="py-3 px-4">{cashback !== "-" ? cashback + " zł" : "–"}</td>
+                    <td className="py-3 px-4">
                       {r.url ? <a href={r.url} target="_blank" className="text-cyan-400 hover:underline">Odwiedź</a> : "–"}
                     </td>
                   </tr>
@@ -103,8 +110,8 @@ export default function CashbackPage() {
               })}
             </tbody>
           </table>
-          <p className="text-xs text-gray-500 mt-4">
-            Stawki cashback są poglądowe. Zweryfikuj aktualne wartości w serwisach partnerskich.
+          <p className="text-xs text-gray-500 p-4">
+            Stawki poglądowe. Potwierdź w serwisie partnerskim.
           </p>
         </div>
       )}
