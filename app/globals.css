@@ -1,26 +1,16 @@
-@import "tailwindcss";
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* Prosty system typografii i kontener */
+:root { color-scheme: light; }
+.container { @apply mx-auto max-w-5xl px-4; }
+.h1 { @apply text-3xl md:text-4xl font-bold tracking-tight; }
+.h2 { @apply text-xl md:text-2xl font-semibold; }
+.lead { @apply text-gray-600; }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+/* Karta */
+.card { @apply rounded-2xl border bg-white shadow-sm hover:shadow transition; }
+.card-body { @apply p-5; }
+.btn { @apply inline-flex items-center justify-center rounded-lg px-4 py-2 font-medium bg-gray-900 text-white hover:bg-gray-800; }
+.btn-ghost { @apply inline-flex items-center rounded-lg px-3 py-2 font-medium hover:bg-gray-100; }

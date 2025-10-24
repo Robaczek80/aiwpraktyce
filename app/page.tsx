@@ -1,14 +1,48 @@
-﻿export default function Home() {
+﻿import Link from "next/link"
+
+export default function Home() {
   return (
-    <section className="space-y-6">
-      <h1 className="text-3xl font-bold">AI w Praktyce</h1>
-      <p>Praktyczne zastosowania AI: biznes, życie osobiste, narzędzia, zarabianie.</p>
-      <ul className="grid md:grid-cols-2 gap-4">
-        <li className="rounded-xl border bg-white p-4"><a href="/biznes" className="font-medium">Biznes →</a><p className="text-sm text-gray-600">Case study, playbooki, procesy.</p></li>
-        <li className="rounded-xl border bg-white p-4"><a href="/osobiste" className="font-medium">Osobiste →</a><p className="text-sm text-gray-600">Automatyzacje dnia codziennego.</p></li>
-        <li className="rounded-xl border bg-white p-4"><a href="/narzedzia" className="font-medium">Narzędzia →</a><p className="text-sm text-gray-600">Stack, integracje, arkusze.</p></li>
-        <li className="rounded-xl border bg-white p-4"><a href="/zarabianie" className="font-medium">Zarabianie →</a><p className="text-sm text-gray-600">Monetyzacja, oferty, afiliacja.</p></li>
-      </ul>
-    </section>
+    <div className="space-y-10">
+      {/* HERO */}
+      <header className="container pt-10 pb-8">
+        <p className="text-sm font-medium text-gray-500">AI w Praktyce</p>
+        <h1 className="h1 mt-2">Zwiększ efektywność, oszczędzaj, zarabiaj z AI</h1>
+        <p className="lead mt-3 max-w-2xl">
+          Konkretne poradniki, narzędzia i kalkulatory. Zero marketingu, same liczby i wdrożenia.
+        </p>
+        <div className="mt-6 flex gap-3">
+          <Link href="/narzedzia" className="btn">Narzędzia i kalkulatory</Link>
+          <Link href="/biznes" className="btn-ghost">Zastosowania w biznesie</Link>
+        </div>
+      </header>
+
+      {/* SEKCE */}
+      <section className="container grid gap-4 sm:grid-cols-2">
+        <Link href="/biznes" className="card">
+          <div className="card-body">
+            <h2 className="h2">Biznes</h2>
+            <p className="lead mt-1">Procesy, automatyzacje, case studies i ROI.</p>
+          </div>
+        </Link>
+        <Link href="/osobiste" className="card">
+          <div className="card-body">
+            <h2 className="h2">Osobiste</h2>
+            <p className="lead mt-1">Organizacja, oszczędzanie, produktywność z AI.</p>
+          </div>
+        </Link>
+        <Link href="/narzedzia" className="card">
+          <div className="card-body">
+            <h2 className="h2">Narzędzia</h2>
+            <p className="lead mt-1">Kalkulatory: ROI, cashback, prąd i więcej.</p>
+          </div>
+        </Link>
+        <Link href="/zarabianie" className="card">
+          <div className="card-body">
+            <h2 className="h2">Zarabianie</h2>
+            <p className="lead mt-1">Modele przychodu, afiliacja, automaty.</p>
+          </div>
+        </Link>
+      </section>
+    </div>
   )
 }
