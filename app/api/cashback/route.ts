@@ -5,26 +5,38 @@ function toCsvUrl(u: string) {
   return (i > 0 ? u.slice(0, i) : u).replace(/\/$/, "") + "/gviz/tq?tqx=out:csv"
 }
 
+function clean(s: string) {
+  return s?.replace(/^"+|"+$/g, "").replace(/^'+|'+$/g, "").trim()
+}
+
 export async function GET() {
   try {
     const sheetUrl = process.env.SHEET_CASHBACK_URL
-    if (!sheetUrl) return NextResponse.json({ error: "SHEET_URL_MISSING" }, { status: 500 })
+    if (!sheetUrl) {
+      return NextResponse.json({ error: "SHEET_URL_MISSING" }, { status: 500 })
+    }
+
     const csvUrl = toCsvUrl(sheetUrl)
-
     const res = await fetch(csvUrl, { cache: "no-store" })
-    const text = await res.text()
+    if (!res.ok) {
+      return NextResponse.json({ error: `HTTP_${res.status}` }, { status: res.status })
+    }
 
-    const rows = text.trim().split(/\r?\n/)
-    const headers = rows.shift()?.split(",").map(h => h.trim()) ?? []
-    const data = rows.map(line => {
-      const cols = line.split(",")
-      const obj: Record<string,string> = {}
-      headers.forEach((h, i) => obj[h] = (cols[i] ?? "").trim())
-      return obj
-    })
+    const text = await res.text()
+    const delimiter = text.includes(";") ? ";" : ","
+    const lines = text.trim().split(/\r?\n/)
+    const headers = lines.shift()?.split(delimiter).map(h => clean(h)) ?? []
+    const data = lines
+      .map(line => {
+        const cols = line.split(delimiter)
+        const obj: Record<string, string> = {}
+        headers.forEach((h, i) => (obj[h] = clean(cols[i] ?? "")))
+        return obj
+      })
+      .filter(obj => obj.shop && obj.site)
 
     return NextResponse.json(data)
-  } catch {
-    return NextResponse.json({ error: "FETCH_ERROR" }, { status: 500 })
+  } catch (e: any) {
+    return NextResponse.json({ error: e.message || "FETCH_ERROR" }, { status: 500 })
   }
 }
