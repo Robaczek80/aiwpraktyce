@@ -2,15 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Własne klasy w warstwie components */
-@layer components {
-  .container { @apply mx-auto max-w-5xl px-4; }
-  .h1 { @apply text-3xl md:text-4xl font-bold tracking-tight; }
-  .h2 { @apply text-xl md:text-2xl font-semibold; }
-  .lead { @apply text-gray-600; }
+/* Proste niestandardowe klasy bez @apply */
+:root { color-scheme: light; }
 
-  .card { @apply rounded-2xl border bg-white shadow-sm hover:shadow transition; }
-  .card-body { @apply p-5; }
-  .btn { @apply inline-flex items-center justify-center rounded-lg px-4 py-2 font-medium bg-gray-900 text-white hover:bg-gray-800; }
-  .btn-ghost { @apply inline-flex items-center rounded-lg px-3 py-2 font-medium hover:bg-gray-100; }
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 64rem; /* odpowiada max-w-5xl */
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
+
+.h1 {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+}
+
+.h2 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+}
+
+.lead {
+  color: #4b5563; /* text-gray-600 */
+}
+
+.card {
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  background-color: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.card-body { padding: 1.25rem; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  background-color: #111827;
+  color: white;
+}
+
+.btn:hover { background-color: #1f2937; }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-weight: 500;
+}
+
+.btn-ghost:hover { background-color: #f3f4f6; }
