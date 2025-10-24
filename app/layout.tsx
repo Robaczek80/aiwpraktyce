@@ -1,5 +1,6 @@
 ﻿import "./globals.css"
 import Nav from "./_components/Nav"
+import Footer from "./_components/Footer"
 import GA from "./_components/GA"
 
 export const metadata = {
@@ -10,12 +11,10 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pl">
-      <body className="min-h-screen bg-gray-50 text-gray-900 antialiased">
+      <body className="min-h-screen bg-gray-50 text-gray-900 antialiased flex flex-col">
         <Nav />
-        <main className="mx-auto max-w-5xl px-4 py-8">{children}</main>
-        <footer className="mx-auto max-w-5xl px-4 py-10 text-sm text-gray-500">
-          © {new Date().getFullYear()} AI w Praktyce • Efektywność i oszczędzanie z AI
-        </footer>
+        <main className="flex-1 mx-auto max-w-5xl px-4 py-8">{children}</main>
+        <Footer />
         <GA />
       </body>
     </html>
